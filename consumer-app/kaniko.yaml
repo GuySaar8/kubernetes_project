@@ -9,7 +9,7 @@ spec:
     image: gcr.io/kaniko-project/executor:debug
     args: ["--context=git://github.com/GuySaar8/kubernetes_project",
             "--dockerfile=./consumer-app/Dockerfile",
-            "--destination=guysaar8/consumer:1.0.0"]
+            "--destination=guysaar8/consumer:1.0.1"]
     volumeMounts:
       - name: kaniko-secret
         mountPath: /kaniko/.docker
