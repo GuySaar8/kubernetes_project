@@ -13,14 +13,7 @@ podTemplate(label: podname,
             node(podname) {
                 stage('ubuntu container') {
                     container('ubuntu'){
-                        sh '''
-                            git  pull https://github.com/GuySaar8/kubernetes_project/ main
-                            pwd
-                            cd ~/workspace/kubernetes_project
-                            docker build -t $DOCKER_ACCOUNT/$DOCKER_REPO:${BUILD_NUMBER} .
-                            'echo $DOCKERHUB_CRED_PSW | docker login -u $DOCKERHUB_CRED_USR --password-stdin'
-                            docker push $DOCKER_ACCOUNT$/$DOCKER_REPO:${BUILD_NUMBER}
-                        '''
+                        sh 'pwd'
                         }
                     }
                 }
