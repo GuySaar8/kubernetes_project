@@ -1,20 +1,7 @@
 #!groovy
   environment {
-	  DOCKERHUB_CRED=credentials('dockerhub')
+	  DOCKERHUB_CRED=credentials('DOCKER_HUB_CRED')
 	  DOCKER_ACCOUNT = "guysaar8"
 	  DOCKER_REPO = "consumer" 
   }
 
-def podname = "-jenkinsNode-${BUILD_TAG}"
-podTemplate(label: podname,
-    containers: [
-        containerTemplate(name: 'ubuntu', image: 'ubuntu:21.04',  ttyEnabled: true, command: '/bin/sh')]
-        ){
-            node(podname) {
-                stage('ubuntu container') {
-                    container('ubuntu'){
-                        sh 'pwd'
-                        }
-                    }
-                }
-            }
