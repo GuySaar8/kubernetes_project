@@ -1,13 +1,16 @@
-#!groovy
 pipeline {
 
-   agent {
+  options {
+    ansiColor('xterm')
+  }
+
+  agent {
     kubernetes {
       yamlFile 'builder.yaml'
     }
   }
-  
-	stages {
+
+  stages {
 
     stage('Kaniko Build & Push Image') {
       steps {
@@ -16,7 +19,7 @@ pipeline {
             sh '''
             /kaniko/executor --dockerfile `pwd`/Dockerfile \
                              --context `pwd` \
-                             --destination=guysaar/consumer:${BUILD_NUMBER}
+                             --destination=justmeandopensource/myweb:${BUILD_NUMBER}
             '''
           }
         }
