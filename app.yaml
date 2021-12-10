@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:GuySaar8/kubernetes_project.git
+    path: overlays
+    targetRevision: main
+  destination:
+    server: https://192.168.49.2:8443
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
