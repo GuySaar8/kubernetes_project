@@ -105,6 +105,8 @@ The only deffrence was that we set the jenkins file to the app folder path.
 
 pipline using scm -> my git repo -> path to jenkins file: ./producer-app/Jenkinsfile
 
+# Create github pages for helm charts
+
 # ArgoCD
 
 $ kubectl create namespace argocd
