@@ -16,7 +16,7 @@ pipeline {
             sh '''
             /kaniko/executor --dockerfile `pwd`/producer-app/Dockerfile \
                              --context `pwd` \
-                             --destination=guysaar/producer:${BUILD_NUMBER}
+                             --destination=guysaar8/producer:${BUILD_NUMBER}
             '''
           }
         }
