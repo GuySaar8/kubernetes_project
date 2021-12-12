@@ -105,7 +105,41 @@ The only deffrence was that we set the jenkins file to the app folder path.
 
 pipline using scm -> my git repo -> path to jenkins file: ./producer-app/Jenkinsfile
 
-# Create github pages for helm charts
+# Github Pages 
+    create a new orpahn branch by the name - gh-pages
+    $ git checkout --orphan gh-pages
+
+    * we can create index.html as "home page" for out chart.
+
+# CI for github pages helm charts Repo
+
+this CI will run on github action and will when new PR is sumitted.
+
+Kind Action - A GitHub Action for Kubernetes IN Docker - local clusters for testing Kubernetes using kubernetes-sigs/kind.
+
+Chart-testing Action - A GitHub Action for installing the helm/chart-testing CLI tool. Will run lint and deployment testing for our helm chart. 
+
+Chart-releaser Action - A GitHub action to turn a GitHub project into a self-hosted Helm chart repo, using helm/chart-releaser CLI tool. 
+
+workflows: 
+1. lint test -
+    on PR check out the repo
+    Run testing with lint
+    createing kind cluster and running the chart and test if the installation was successful.
+
+    fast failing - if lint testing was failed it wont try and deploy our chart in the cluster.
+
+2. release -
+    we check it our and configure the config user and email becuase we will push code back in to the github pages branch.
+    installs helm
+    add dependent chart repo if neccery
+    and does the helm chart release.
+
+    the release uses a github token by the name CR_TOKEN
+
+* set token:
+    go to Settings -> Developer Settings -> Personal Access Tokens -> Generate Token -> Copy Token 
+    go to your repository settings -> Secrets -> New Repository Secret -> name the secret CR_TOKEN and paste the Token Value.
 
 # ArgoCD
 
