@@ -9,6 +9,7 @@ spec:
   {{- end }}
   selector:
     matchLabels:
+      app: producer
   template:
     metadata:
       {{- with .Values.podAnnotations }}
