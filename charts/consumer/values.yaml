@@ -10,6 +10,7 @@ imagetag: 1.0.7
 service:
   type: NodePort
   port: 80
+
 imagePullSecrets: []
 podAnnotations: {}
 podSecurityContext: {}
@@ -36,7 +37,7 @@ resources: {}
 
 autoscaling:
   enabled: false
-  
+
 nodeSelector: {}
 
 tolerations: []
