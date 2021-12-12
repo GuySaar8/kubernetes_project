@@ -17,6 +17,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
+        app: producer
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
