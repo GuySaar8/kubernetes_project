@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image: guysaar8/consumer
-imagetag: 1.0.3
+imagetag: 1.0.1
 service:
   type: NodePort
   port: 80
