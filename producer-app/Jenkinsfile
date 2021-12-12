@@ -14,7 +14,7 @@ pipeline {
         container('kaniko') {
           script {
             sh '''
-            /kaniko/executor --dockerfile `pwd`./producer-app/Dockerfile \
+            /kaniko/executor --dockerfile `pwd`/producer-app/Dockerfile \
                              --context `pwd` \
                              --destination=guysaar/producer:${BUILD_NUMBER}
             '''
