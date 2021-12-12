@@ -3,7 +3,7 @@ pipeline {
 
    agent {
     kubernetes {
-      yamlFile 'builder.yaml'
+      yamlFile './producer-app/builder.yaml'
     }
   }
   
