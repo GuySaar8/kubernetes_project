@@ -6,6 +6,7 @@ replicaCount: 1
 serviceAccount:
   create: "true"
 image: guysaar8/consumer
+  pullPolicy: IfNotPresent
 imagetag: 1.0.12
 service:
   type: NodePort
