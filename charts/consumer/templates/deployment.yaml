@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "consumer.fullname" . }}
+  name: {{ .Release.Name }}
   labels:
 spec:
   {{- if not .Values.autoscaling.enabled }}
@@ -22,7 +22,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "consumer.serviceAccountName" . }}
+      serviceAccountName: {{ .Release.Name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
