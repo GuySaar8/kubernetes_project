@@ -8,7 +8,7 @@ serviceAccount:
 image:
   repository: guysaar8/consumer
   pullPolicy: IfNotPresent
-imagetag: 1.0.12
+imagetag: 1.0.14
 service:
   type: NodePort
   port: 80
