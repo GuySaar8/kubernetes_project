@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@gitlab.com:tikalk.com/users/guy.saar/guy.saar.git
+    repoURL: git@github.com:GuySaar8/kubernetes_project.git
     path: overlays
     targetRevision: main
   destination:
