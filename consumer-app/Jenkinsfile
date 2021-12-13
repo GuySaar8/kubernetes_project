@@ -7,7 +7,7 @@ pipeline {
 
   agent {
     kubernetes {
-      yamlFile 'builder.yaml'
+      yamlFile './consumer-app/builder.yaml'
     }
   }
 
@@ -18,7 +18,7 @@ pipeline {
         container('kaniko') {
           script {
             sh '''
-            /kaniko/executor --dockerfile `pwd`/Dockerfile \
+            /kaniko/executor --dockerfile `pwd`/consumer-app/Dockerfile \
                              --context `pwd` \
                              --destination=guysaar8/consumer:1.0.${BUILD_NUMBER}
             '''
