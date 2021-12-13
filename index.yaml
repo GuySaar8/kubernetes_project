@@ -1,0 +1,31 @@
+apiVersion: v1
+entries:
+  consumer:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-12-13T23:42:33.593317568Z"
+    description: A Helm chart for Kubernetes
+    digest: 45b2e97cdea2950ecc143aa0d2c31a0664e1e5c9e82dcce51a37d0f5a56140b5
+    maintainers:
+    - email: guysaar8@gmail.com
+      name: GS
+    name: consumer
+    type: application
+    urls:
+    - https://github.com/GuySaar8/kubernetes_project/releases/download/consumer-1.0.1/consumer-1.0.1.tgz
+    version: 1.0.1
+  producer:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-12-13T23:42:33.759503334Z"
+    description: A Helm chart for Kubernetes
+    digest: ed4e992b98382a43834fae383d258f116f3709934f3d95692e037eeb550bccd5
+    maintainers:
+    - email: guysaar8@gmail.com
+      name: GS
+    name: producer
+    type: application
+    urls:
+    - https://github.com/GuySaar8/kubernetes_project/releases/download/producer-0.1.1/producer-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-12-13T23:42:33.297916894Z"
