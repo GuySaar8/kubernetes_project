@@ -33,6 +33,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image}}:{{ .Values.imagetag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python"]
+          args: ["/app/producer.py", "-p 5672", "-s rabbitmq", "-m 'Hello'", "-r 30"]
           ports:
             - name: http
               containerPort: 80
