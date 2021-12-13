@@ -1,13 +1,46 @@
 # Default values for consumer.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
 replicaCount: 1
-
-image: guysaar8/consumer
-imagetag: 0.0.0
+serviceAccount:
+  create: "true"
+image:
+  repository: guysaar8/consumer
+  pullPolicy: IfNotPresent
+imagetag: 1.0.9
 service:
   type: NodePort
   port: 80
 
+imagePullSecrets: []
+podAnnotations: {}
+podSecurityContext: {}
+  # fsGroup: 2000
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

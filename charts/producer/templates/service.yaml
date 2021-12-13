@@ -1,9 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "producer.fullname" . }}
+  name: {{ .Release.Name }}
   labels:
-    {{- include "producer.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +11,3 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "producer.selectorLabels" . | nindent 4 }}
