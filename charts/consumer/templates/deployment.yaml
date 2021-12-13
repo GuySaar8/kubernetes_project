@@ -1,15 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ include "producer.fullname" . }}
   labels:
+    {{- include "producer.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      app: consumer
+      {{- include "producer.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -17,21 +18,23 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        app: consumer
+        {{- include "producer.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ .Release.Name }}
+      serviceAccountName: {{ include "producer.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository}}:{{ .Values.imagetag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image}}:{{ .Values.imagetag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["python"]
+          args: ["/app/consumer.py", "-p 5672", "-s rabbitmq"]
           ports:
             - name: http
               containerPort: 80
