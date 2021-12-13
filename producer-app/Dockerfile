@@ -4,4 +4,3 @@ WORKDIR /app
 ADD ./producer-app/producer.py /app
 ADD requirements.txt /app
 RUN pip install --requirement /app/requirements.txt
-
