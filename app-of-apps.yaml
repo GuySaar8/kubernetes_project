@@ -6,11 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/GuySaar8/kubernetes_project.git
+    repoURL: git@github.com:GuySaar8/kubernetes_project.git
     path: overlays
     targetRevision: main
   destination:
-    server: https://192.168.49.2:8443
+    server: https://kubernetes.default.svc
     namespace: default
   syncPolicy:
     automated:
