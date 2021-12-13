@@ -11,7 +11,7 @@ spec:
   source:
     chart: rabbitmq
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 3.9.11
+    targetRevision: 8.24.12
     helm:
       values: |-
         metrics:
