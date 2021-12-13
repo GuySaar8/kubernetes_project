@@ -34,6 +34,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["python"]
           args: ["/app/consumer.py", "-p 5672", "-s rabbitmq"]
+
           ports:
             - name: http
               containerPort: 80
