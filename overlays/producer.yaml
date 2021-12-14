@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   destination:
-    namespace: defualt
+    namespace: default
     server: https://kubernetes.default.svc
   source:
     chart: producer
