@@ -32,19 +32,12 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository}}:{{ .Values.imagetag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["python /app/producer.py -p 5672 -s rabbitmq.rabbit-mq.svc.cluster.local -m 'Hello' -r 30"]
+          command: ["python"]
+          args: ["/app/producer.py", "-p 5672", "-s rabbitmq.rabbit-mq.svc.cluster.local", "-m 'Hello'", "-r 30"]
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
