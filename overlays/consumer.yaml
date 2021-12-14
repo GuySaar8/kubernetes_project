@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: consumer
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: defualt
+    server: https://kubernetes.default.svc
+  source:
+    chart: consumer
+    repoURL: https://github.com/GuySaar8/kubernetes_project/releases/download/consumer-1.0.1/consumer-1.0.1.tgz
+    targetRevision: 1.0.1
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
