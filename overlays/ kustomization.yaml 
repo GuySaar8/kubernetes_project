@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - rabbitmq.yaml
   - consumer.yaml
+  - producer.yaml
