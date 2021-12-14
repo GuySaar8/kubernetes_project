@@ -6,7 +6,7 @@ replicaCount: 1
 serviceAccount:
   create: "true"
 image:
-  repository: guysaar8/consumer
+  repository: guysaar8/producer
   pullPolicy: IfNotPresent
 imagetag: 1.0.14
 service:
