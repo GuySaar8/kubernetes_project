@@ -10,7 +10,7 @@ spec:
     server: https://kubernetes.default.svc
   source:
     chart: consumer
-    repoURL: https://github.com/GuySaar8/kubernetes_project/releases/download/consumer-1.0.1/consumer-1.0.1.tgz
+    repoURL: https://guysaar8.github.io/kubernetes_project
     targetRevision: 1.0.1
   syncPolicy:
     automated:
