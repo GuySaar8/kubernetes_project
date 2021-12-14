@@ -82,6 +82,19 @@ entries:
   producer:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-12-14T09:56:46.478884789Z"
+    description: A Helm chart for Kubernetes
+    digest: 178193c95468f286ce968b98fc7aa8e91c6c8321c8c13c1a1670b3f0c7a5985c
+    maintainers:
+    - email: guysaar8@gmail.com
+      name: GS
+    name: producer
+    type: application
+    urls:
+    - https://github.com/GuySaar8/kubernetes_project/releases/download/producer-1.0.7/producer-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-12-14T08:33:21.86336731Z"
     description: A Helm chart for Kubernetes
     digest: c86b011170fc2e0cb8462351b6201ae1d3fd5893407804dcd279b65db85a1a75
