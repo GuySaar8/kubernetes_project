@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: consumer
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    namespace: defualt
+    server: https://kubernetes.default.svc
+  source:
+    chart: producer
+    repoURL: https://guysaar8.github.io/kubernetes_project
+    targetRevision: 0.1.1
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
