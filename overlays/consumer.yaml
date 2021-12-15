@@ -11,7 +11,7 @@ spec:
   source:
     chart: consumer
     repoURL: https://guysaar8.github.io/kubernetes_project
-    targetRevision: 1.0.7
+    targetRevision: 1.0.8
   syncPolicy:
     automated:
       prune: false

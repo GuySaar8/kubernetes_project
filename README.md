@@ -5,7 +5,6 @@
     Create full ci cd
     Install RabbitMQ with expoter
 
-
 * CI - 
     Jenkins using git push notification from github.
     Each app has it's own Jenkins file that create and push docker image on kubernetes cluster using kaniko.
