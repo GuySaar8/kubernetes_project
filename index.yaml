@@ -3,6 +3,19 @@ entries:
   consumer:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-12-15T18:17:14.105820143Z"
+    description: A Helm chart for Kubernetes
+    digest: 844efd40339c35004eafc151e0c8e3f5a2febfe2cf90bc0e7c63a2f23f813bb4
+    maintainers:
+    - email: guysaar8@gmail.com
+      name: GS
+    name: consumer
+    type: application
+    urls:
+    - https://github.com/GuySaar8/kubernetes_project/releases/download/consumer-1.0.7/consumer-1.0.7.tgz
+    version: 1.0.7
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-12-14T08:33:21.691978977Z"
     description: A Helm chart for Kubernetes
     digest: 52cf332ec1b1aa156760f1da71113aba8e76ad0886eaf1d21229afb39cceeea5
