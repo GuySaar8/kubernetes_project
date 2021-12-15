@@ -6,20 +6,20 @@
     Install RabbitMQ with expoter
 
 
-CI - 
+* CI - 
     Jenkins using git push notification from github.
     Each app has it's own Jenkins file that create and push docker image on kubernetes cluster using kaniko.
-CD - 
+* CD - 
     Using argo-CD to update changes for the helm chart.
     Using Flagger with istio to implement progressive delivery.
 
 # install jenkins on kubernetes cluster
 https://www.jenkins.io/doc/book/installing/kubernetes/
-$ helm repo add jenkinsci https://charts.jenkins.io
-$ helm repo update
-$ helm search repo jenkinsci
-$ k craete ns jenkins
-$ helm show values jenkinsci/jenkins > ~/Desktop/jenkins.yaml
+    $ helm repo add jenkinsci https://charts.jenkins.io
+    $ helm repo update
+    $ helm search repo jenkinsci
+    $ k craete ns jenkins
+    $ helm show values jenkinsci/jenkins > ~/Desktop/jenkins.yaml
 
 * check jenkins-values/values.yaml
 
@@ -104,6 +104,7 @@ Each app has it's own pipline.
 The only deffrence was that we set the jenkins file to the app folder path.
 
 pipline using scm -> my git repo -> path to jenkins file: ./producer-app/Jenkinsfile
+the jenkins files looks for builder.yaml and pass kaniko the vlues for the build and push.  
 
 # Github Pages 
     create a new orpahn branch by the name - gh-pages
@@ -150,6 +151,26 @@ $ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.p
 
 * connect to git repo using ssh
 set github token with ssh-public
+    - settings -> ssh and new gpg keys -> new ssh key
 set argo with ssh-private
+    - settings -> repositories -> connect repo using ssh
 
-kap app-of-apps.yaml
+run argo apllication:
+    $ kubectl apply -f app-of-apps.yaml
+the application will is set up to check the manifests in the overlays.
+we have 3 overlays:
+    1. rabbitmq with metrics enabled
+    2. producer chart - installed from our helm repo\github pages
+    3. consumer chart - installed from our helm repo\github pages
+
+# install istio
+    helm repo add istio https://istio-release.storage.googleapis.com/charts
+    helm repo update
+    kubectl create namespace istio-system
+    helm install istio-base istio/base -n istio-system
+    helm install istiod istio/istiod -n istio-system --wait
+    kubectl create namespace istio-ingress
+    kubectl label namespace istio-ingress istio-injection=enabled
+    helm install istio-ingress istio/gateway -n istio-ingress --wait
+
+# install flagger with metrics
