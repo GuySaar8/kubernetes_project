@@ -173,3 +173,117 @@ we have 3 overlays:
     helm install istio-ingress istio/gateway -n istio-ingress --wait
 
 # install flagger with metrics
+helm repo add flagger https://flagger.app
+kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/prometheus.yaml
+helm upgrade -i flagger flagger/flagger --namespace=istio-system --set crd.create=false --set meshProvider=istio --set metricsServer=http://prometheus.istio-system:9090
+kubectl create ns test
+kubectl label namespace test istio-injection=enabled
+kubectl apply -k https://github.com/fluxcd/flagger//kustomize/podinfo?ref=main
+kubectl apply -k https://github.com/fluxcd/flagger//kustomize/tester?ref=main
+
+'''template-metric.yaml
+apiVersion: flagger.app/v1beta1
+kind: MetricTemplate
+metadata:
+  name: error-rate
+  namespace: istio-system
+spec:
+  provider:
+    address: http://prometheus.istio-system.svc.cluster.local:9090
+    type: prometheus
+  query: |
+    100 -
+    (sum(rate(istio_requests_total{destination_service="podinfo-canary.test.svc.cluster.local",  response_code=~"5.*"}[30s]))
+    /
+    sum(rate(istio_requests_total{destination_service="podinfo-canary.test.svc.cluster.local"}[30s]))
+    * 100
+    )
+
+'''
+
+'''hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: podinfo
+  namespace: test
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: podinfo
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          # scale up if usage is above
+          # 99% of the requested CPU (100m)
+          averageUtilization: 99apiVersion: flagger.app/v1beta1
+'''
+
+'''canary.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: podinfo
+  namespace: test
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: podinfo
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          # scale up if usage is above
+          # 99% of the requested CPU (100m)
+          averageUtilization: 99apiVersion: flagger.app/v1beta1
+STEP 9: Deploy the Canary for podinfo application
+kind: Canary
+metadata:
+  name: podinfo
+  namespace: test
+spec:
+  # deployment reference
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: podinfo
+  service:
+    # service port number
+    port: 9898
+    # Istio traffic policy (optional)
+    trafficPolicy:
+      tls:
+        # use ISTIO_MUTUAL when mTLS is enabled
+        mode: DISABLE
+  analysis:
+    # schedule interval (default 60s)
+    interval: 10s
+    # max number of failed metric checks before rollback
+    threshold: 5
+    # max traffic percentage routed to canary
+    # percentage (0-100)
+    maxWeight: 100
+    # canary increment step
+    # percentage (0-100)
+    stepWeight: 5
+    metrics:
+      - name: "500 percentage"
+        templateRef:
+          name: error-rate
+          namespace: istio-system
+        thresholdRange:
+          min: 99
+        interval: 15s
+'''
