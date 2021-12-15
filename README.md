@@ -173,6 +173,7 @@ we have 3 overlays:
     helm install istio-ingress istio/gateway -n istio-ingress --wait
 
 # install flagger with metrics
+  ```
   $ helm repo add flagger https://flagger.app
   $ kubectl apply -f https://raw.githubusercontent.com/fluxcd/flagger/main/artifacts/flagger/crd.yaml
   $ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.12/samples/addons/prometheus.yaml
@@ -181,7 +182,7 @@ we have 3 overlays:
   $ kubectl label namespace test istio-injection=enabled
   $ kubectl apply -k https://github.com/fluxcd/flagger//kustomize/podinfo?ref=main
   $ kubectl apply -k https://github.com/fluxcd/flagger//kustomize/tester?ref=main
-
+  ```
   ```yaml
   apiVersion: flagger.app/v1beta1
   kind: MetricTemplate
