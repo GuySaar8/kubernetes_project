@@ -14,11 +14,13 @@
 
 # install jenkins on kubernetes cluster
 https://www.jenkins.io/doc/book/installing/kubernetes/
+    ```
     $ helm repo add jenkinsci https://charts.jenkins.io
     $ helm repo update
     $ helm search repo jenkinsci
     $ k craete ns jenkins
     $ helm show values jenkinsci/jenkins > ~/Desktop/jenkins.yaml
+      ```
 
 * check jenkins-values/values.yaml
 
@@ -103,7 +105,14 @@ Each app has it's own pipline.
 The only deffrence was that we set the jenkins file to the app folder path.
 
 pipline using scm -> my git repo -> path to jenkins file: ./producer-app/Jenkinsfile
-the jenkins files looks for builder.yaml and pass kaniko the vlues for the build and push.  
+the jenkins files looks for builder.yaml and pass kaniko the vlues for the build and push. 
+
+    * Setup github jenkins push notification
+        **GitHub**
+        repo setting -> webhooks -> add webhook -> jenkins_url:8080/githubwebhook
+
+        **Jenkins**
+        in the pipline under build triggers -> Github hook for GITscm polling
 
 # Github Pages 
     create a new orpahn branch by the name - gh-pages
@@ -142,12 +151,12 @@ workflows:
     go to your repository settings -> Secrets -> New Repository Secret -> name the secret CR_TOKEN and paste the Token Value.
 
 # ArgoCD
-
+  ```
 $ kubectl create namespace argocd
 $ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 $ kubectl port-forward svc/argocd-server -n argocd 8080:443
 $ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
-
+  ```
 * connect to git repo using ssh
 set github token with ssh-public
     - settings -> ssh and new gpg keys -> new ssh key
@@ -155,7 +164,9 @@ set argo with ssh-private
     - settings -> repositories -> connect repo using ssh
 
 run argo apllication:
+    ```
     $ kubectl apply -f app-of-apps.yaml
+      ```
 the application will is set up to check the manifests in the overlays.
 we have 3 overlays:
     1. rabbitmq with metrics enabled
@@ -163,6 +174,7 @@ we have 3 overlays:
     3. consumer chart - installed from our helm repo\github pages
 
 # install istio
+    ```
     helm repo add istio https://istio-release.storage.googleapis.com/charts
     helm repo update
     kubectl create namespace istio-system
@@ -171,7 +183,7 @@ we have 3 overlays:
     kubectl create namespace istio-ingress
     kubectl label namespace istio-ingress istio-injection=enabled
     helm install istio-ingress istio/gateway -n istio-ingress --wait
-
+    ```
 # install flagger with metrics
   ```
   $ helm repo add flagger https://flagger.app
@@ -180,8 +192,6 @@ we have 3 overlays:
   $ helm upgrade -i flagger flagger/flagger --namespace=istio-system --set crd.create=false --set meshProvider=istio --set metricsServer=http://prometheus.istio-system:9090
   $ kubectl create ns test
   $ kubectl label namespace test istio-injection=enabled
-  $ kubectl apply -k https://github.com/fluxcd/flagger//kustomize/podinfo?ref=main
-  $ kubectl apply -k https://github.com/fluxcd/flagger//kustomize/tester?ref=main
   ```
   ```yaml
   apiVersion: flagger.app/v1beta1
@@ -195,9 +205,9 @@ we have 3 overlays:
       type: prometheus
     query: |
       100 -
-      (sum(rate(istio_requests_total{destination_service="podinfo-canary.test.svc.cluster.local",  response_code=~"5.*"}[30s]))
+      (sum(rate(istio_requests_total{destination_service="<APP_SERVICE_NAME>.<APP_NAMESPACE>.svc.cluster.local",  response_code=~"5.*"}[30s]))
       /
-      sum(rate(istio_requests_total{destination_service="podinfo-canary.test.svc.cluster.local"}[30s]))
+      sum(rate(istio_requests_total{destination_service="<APP_SERVICE_NAME>.<APP_NAMESPACE>.svc.cluster.local"}[30s]))
       * 100
       )
 
@@ -207,13 +217,13 @@ we have 3 overlays:
   apiVersion: autoscaling/v2beta2
   kind: HorizontalPodAutoscaler
   metadata:
-    name: podinfo
-    namespace: test
+    name: <HPA_NAME>
+    namespace: <APP_NAMESPACE>
   spec:
     scaleTargetRef:
       apiVersion: apps/v1
       kind: Deployment
-      name: podinfo
+      name: <APP_NAME>
     minReplicas: 2
     maxReplicas: 4
     metrics:
@@ -230,14 +240,14 @@ we have 3 overlays:
   ```yaml
   kind: Canary
   metadata:
-    name: podinfo
-    namespace: test
+    name: <CANARY_RELEASE_NAME>
+    namespace: <APP_NAMESPACE>
   spec:
     # deployment reference
     targetRef:
       apiVersion: apps/v1
       kind: Deployment
-      name: podinfo
+      name: <APP_NAME>
     service:
       # service port number
       port: 9898
