@@ -14,13 +14,13 @@
 
 # install jenkins on kubernetes cluster
 https://www.jenkins.io/doc/book/installing/kubernetes/
-    ```
-    $ helm repo add jenkinsci https://charts.jenkins.io
-    $ helm repo update
-    $ helm search repo jenkinsci
-    $ k craete ns jenkins
-    $ helm show values jenkinsci/jenkins > ~/Desktop/jenkins.yaml
-      ```
+```
+$ helm repo add jenkinsci https://charts.jenkins.io
+$ helm repo update
+$ helm search repo jenkinsci
+$ k craete ns jenkins
+$ helm show values jenkinsci/jenkins > ~/Desktop/jenkins.yaml
+```
 
 * check jenkins-values/values.yaml
 
